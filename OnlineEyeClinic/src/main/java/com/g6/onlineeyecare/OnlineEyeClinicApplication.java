@@ -1,0 +1,13 @@
+package com.g6.onlineeyecare;
+
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+
+@SpringBootApplication
+public class OnlineEyeClinicApplication {
+
+	public static void main(String[] args) {
+		SpringApplication.run(OnlineEyeClinicApplication.class, args);
+	}
+
+}
