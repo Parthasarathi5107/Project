@@ -11,12 +11,14 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.g6.onlineeyecare.exceptions.PatientIdFoundNotException;
 import com.g6.onlineeyecare.exceptions.ReportIdNotFoundException;
+import com.g6.onlineeyecare.exceptions.TestIdNotFoundException;
 import com.g6.onlineeyecare.patient.dao.IPatientRepository;
 import com.g6.onlineeyecare.patient.dto.Patient;
 import com.g6.onlineeyecare.report.dao.IReportRepository;
 import com.g6.onlineeyecare.report.dto.Report;
 import com.g6.onlineeyecare.spectacles.dto.Spectacles;
 import com.g6.onlineeyecare.spectacles.service.ISpectaclesService;
+import com.g6.onlineeyecare.test.dao.ITestRepository;
 
 @Service
 public class ReportServiceImpl implements IReportService {
@@ -27,15 +29,23 @@ public class ReportServiceImpl implements IReportService {
 	ISpectaclesService spectacleService;
 	@Autowired
 	IPatientRepository patientRepository;
+	@Autowired
+	ITestRepository testRepository;
 
 	@Override
 	@Transactional
-	public Report addReport(Report report) {
-		try {
+	public Report addReport(Report report) throws TestIdNotFoundException,PatientIdFoundNotException{
+			if(patientRepository.findById(report.getPatient().getUserId()).isPresent()) {
+			 if(testRepository.findById(report.getTypeOfTest().getTestId()).isPresent()) {
 			repository.save(report);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+			 }
+			else {
+				throw new TestIdNotFoundException("test Id not found");
+			}
+			}
+			 else {
+				 throw new PatientIdFoundNotException("patient Id not found");
+			 }
 		return report;
 	}
 

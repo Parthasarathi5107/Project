@@ -2,7 +2,10 @@ package com.g6.onlineeyecare.doctor.controller;
 
 import java.util.List;
 
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -21,7 +24,7 @@ import com.g6.onlineeyecare.test.dto.Test;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 
-
+@Validated
 @Api(value = "Doctor Rest Controller", description = "REST APIs related to Doctor Entity!!!!")
 @RestController
 @RequestMapping("/doctor")
@@ -32,7 +35,7 @@ public class DoctorController {
 
     @ApiOperation(value = "Create a new Doctor profile",response = Doctor.class)
     @PostMapping("/add")
-    public Doctor addDoctor(@RequestBody Doctor doctor) {
+    public Doctor addDoctor(@RequestBody @Valid Doctor doctor) {
         return    this.doctorService.addDoctor(doctor);
 
     }

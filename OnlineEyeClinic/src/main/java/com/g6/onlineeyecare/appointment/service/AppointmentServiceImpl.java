@@ -11,23 +11,39 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.g6.onlineeyecare.appointment.dao.IAppointmentRepository;
 import com.g6.onlineeyecare.appointment.dto.Appointment;
+import com.g6.onlineeyecare.doctor.dao.IDoctorRepository;
 import com.g6.onlineeyecare.exceptions.AppointmentIdNotFoundException;
+import com.g6.onlineeyecare.exceptions.DoctorIdNotFoundException;
 import com.g6.onlineeyecare.exceptions.InvalidAppointmentException;
+import com.g6.onlineeyecare.exceptions.PatientIdFoundNotException;
+import com.g6.onlineeyecare.patient.dao.IPatientRepository;
 
 @Service
 public class AppointmentServiceImpl implements IAppointmentService {
 
 	@Autowired
 	IAppointmentRepository repository;
+	@Autowired
+	IPatientRepository patientRepository;
+	@Autowired
+	IDoctorRepository doctorRepository;
 
 	@Override
 	@Transactional
-	public Appointment bookAppointment(Appointment appointment) {
-		try {
-			repository.save(appointment);
-		} catch (Exception e) {
-			e.printStackTrace();
+	public Appointment bookAppointment(Appointment appointment) throws DoctorIdNotFoundException, PatientIdFoundNotException {
+		if(doctorRepository.findById(appointment.getDoctor().getUserId()).isPresent()) {
+			if(patientRepository.findById(appointment.getPatient().getUserId()).isPresent()) {
+				repository.save(appointment);
+			}
+			else {
+				throw new PatientIdFoundNotException("Patient Id not found");
+			}
 		}
+		else {
+			throw new DoctorIdNotFoundException("Doctor Id not found");
+		}
+			
+		
 		return appointment;
 	}
 

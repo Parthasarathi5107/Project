@@ -8,6 +8,10 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
 import com.g6.onlineeyecare.patient.dto.Patient;
 
@@ -19,12 +23,19 @@ public class Test {
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private int testId;
 	@Column
+	@NotEmpty(message = "cannot be left empty")
+	@Size(min=3,max=20)
 	private String testName;
 	@Column
+	@NotEmpty(message = "cannot be left empty")
+	@Size(min=3,max=20)
 	private String testType;
 	@Column
+	@NotEmpty(message = "cannot be left empty")
 	private String testDescription;
 	@Column
+	@Min(value=500,message="cost cannot be less than 500")
+	@NotNull
 	private double testCost;
 	
 	@OneToOne

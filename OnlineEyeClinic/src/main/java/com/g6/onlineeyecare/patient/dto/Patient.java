@@ -5,7 +5,10 @@ import java.time.LocalDate;
 import javax.persistence.Column;
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
-
+import javax.validation.constraints.Email;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 import com.g6.onlineeyecare.user.dto.User;
 
 @Entity
@@ -13,12 +16,17 @@ import com.g6.onlineeyecare.user.dto.User;
 public class Patient extends User{
 	
 	@Column
+	@Min(value=1)
 	private int patientAge;
 	@Column
+	@NotNull
 	private long patientMobile;
 	@Column
+	@Email(message="Email should be valid")
+	@NotEmpty(message = "Email cannot be empty")
 	private String patientEmail;
 	@Column
+	@NotNull
 	private LocalDate patientDOB;
 	@Column
 	private String address;
@@ -54,7 +62,7 @@ public class Patient extends User{
 		return patientDOB;
 	}
 
-	public void setPatientDOB(LocalDate patientDOB) {
+	public void setPatientDOB( LocalDate patientDOB) {
 		this.patientDOB = patientDOB;
 	}
 

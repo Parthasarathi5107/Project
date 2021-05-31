@@ -3,8 +3,11 @@ package com.g6.onlineeyecare.report.controller;
 import java.time.LocalDate;
 import java.util.List;
 
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -16,6 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.g6.onlineeyecare.exceptions.PatientIdFoundNotException;
 import com.g6.onlineeyecare.exceptions.ReportIdNotFoundException;
+import com.g6.onlineeyecare.exceptions.TestIdNotFoundException;
 import com.g6.onlineeyecare.report.dto.Report;
 import com.g6.onlineeyecare.report.service.IReportService;
 import com.g6.onlineeyecare.spectacles.dto.Spectacles;
@@ -23,6 +27,7 @@ import com.g6.onlineeyecare.spectacles.dto.Spectacles;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 
+@Validated
 @Api(value = "Report Rest Controller", description = "REST APIs related to Report Entity!!!!")
 @RestController
 @RequestMapping("/report")
@@ -33,7 +38,7 @@ public class ReportController {
 
     @ApiOperation(value = "Generate a new report",response = Report.class)
     @PostMapping("/add")
-    public Report addReport(@RequestBody Report report) {
+    public Report addReport(@RequestBody @Valid Report report) throws TestIdNotFoundException, PatientIdFoundNotException {
         return this.reportService.addReport(report);
 
     }

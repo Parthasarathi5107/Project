@@ -5,11 +5,12 @@ import java.util.List;
 
 import com.g6.onlineeyecare.exceptions.PatientIdFoundNotException;
 import com.g6.onlineeyecare.exceptions.ReportIdNotFoundException;
+import com.g6.onlineeyecare.exceptions.TestIdNotFoundException;
 import com.g6.onlineeyecare.report.dto.Report;
 import com.g6.onlineeyecare.spectacles.dto.Spectacles;
 
 public interface IReportService {
-	Report addReport(Report report);
+	Report addReport(Report report) throws TestIdNotFoundException, PatientIdFoundNotException;
 
 	Report updateReport(Report report)throws ReportIdNotFoundException;
 

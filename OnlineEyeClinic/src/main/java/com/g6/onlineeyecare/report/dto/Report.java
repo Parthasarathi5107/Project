@@ -4,11 +4,16 @@ import java.time.LocalDate;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
+
+import org.springframework.format.annotation.DateTimeFormat;
 
 import com.g6.onlineeyecare.patient.dto.Patient;
 import com.g6.onlineeyecare.test.dto.Test;
@@ -21,22 +26,30 @@ public class Report {
 	private int reportId;
 	
 	@Column
+	@DateTimeFormat(pattern = "yyyy-MM-dd")
+	@NotNull
 	private LocalDate dateOfReport;
 	@Column
+	@NotEmpty(message = "cannot be left empty")
 	private String descriptionOfReport;
 	@Column
+	@NotEmpty(message = "cannot be left empty")
 	private String visualAcuity;
 	@Column
+	@NotEmpty(message = "cannot be left empty")
 	private String visualAcuityNear;
 	@Column
+	@NotEmpty(message = "cannot be left empty")
 	private String visualAcuityDistance;
 	
-	@OneToOne
+	@OneToOne(fetch = FetchType.EAGER,optional = true)
 	@JoinColumn(name = "test_Id",referencedColumnName = "testId")
+	@NotNull
 	private Test    typeOfTest;
 	
-	@OneToOne
+	@OneToOne(fetch = FetchType.EAGER,optional = true)
 	@JoinColumn(name = "patient_Id",referencedColumnName = "userId")
+	@NotNull
 	private Patient patient;
 	
 	

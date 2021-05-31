@@ -2,7 +2,10 @@ package com.g6.onlineeyecare.spectacles.controller;
 
 import java.util.List;
 
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -11,6 +14,8 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import com.g6.onlineeyecare.exceptions.PatientIdFoundNotException;
 import com.g6.onlineeyecare.exceptions.SpectaclesIdNotFoundException;
 import com.g6.onlineeyecare.spectacles.dto.Spectacles;
 import com.g6.onlineeyecare.spectacles.service.ISpectaclesService;
@@ -18,6 +23,7 @@ import com.g6.onlineeyecare.spectacles.service.ISpectaclesService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 
+@Validated
 @Api(value = "Spectacles Rest Controller", description = "REST APIs related to Spectacles Entity!!!!")
 @RestController
 @RequestMapping("/spectacles")
@@ -28,7 +34,7 @@ public class SpectaclesController {
 	
 	@ApiOperation(value = "add a new Spectacles",response = Spectacles.class)
 	@PostMapping("/add")
-	public Spectacles addSpectacles(@RequestBody Spectacles spectacles) {
+	public Spectacles addSpectacles(@RequestBody @Valid Spectacles spectacles) throws PatientIdFoundNotException {
 		return	this.spectaclesService.addSpectacles(spectacles);
 		
 	}

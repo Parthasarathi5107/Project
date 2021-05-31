@@ -11,6 +11,9 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
+
+import org.springframework.format.annotation.DateTimeFormat;
 
 import com.g6.onlineeyecare.doctor.dto.Doctor;
 import com.g6.onlineeyecare.patient.dto.Patient;
@@ -24,9 +27,12 @@ public class Appointment {
 	private int appointmentId;
 	
 	@Column
+	@DateTimeFormat(pattern = "yyyy-MM-dd")
+	@NotNull
 	private LocalDate appointmentDate;
 	
 	@Column
+	@NotNull
 	private LocalTime appointmentTime;
 	
 	@OneToOne

@@ -8,6 +8,10 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
 import com.g6.onlineeyecare.patient.dto.Patient;
 
@@ -19,10 +23,15 @@ public class Spectacles {
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private int spectaclesId;
 	@Column
+	@NotEmpty(message = "cannot be left empty")
+	@Size(min = 3,max = 20)
 	private String spectaclesModel;
 	@Column
+	@NotEmpty(message = "cannot be left empty")
 	private String spectaclesDescription;
 	@Column
+	@Min(value=1000,message = "cost cannot be less than 1000")
+	@NotNull
 	private double spectaclesCost;
 	
 	@OneToOne

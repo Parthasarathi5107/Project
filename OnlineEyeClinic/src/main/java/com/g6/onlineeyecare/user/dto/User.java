@@ -11,6 +11,8 @@ import javax.persistence.Id;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
 import javax.persistence.Table;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.Size;
 
 @Entity
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
@@ -23,10 +25,15 @@ public class User {
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private int userId;
 	@Column
+	@NotEmpty(message = "cannot be left empty")
+	@Size(min=8,max=25)
 	private String password;
 	@Column
+	@NotEmpty(message = "cannot be left empty")
+	@Size(min=3,max=20)
 	private String userName;
 	@Column
+	@NotEmpty(message = "cannot be left empty")
 	private String role;
 	
 	public User() {

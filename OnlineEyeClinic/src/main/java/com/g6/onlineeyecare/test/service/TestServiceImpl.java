@@ -7,8 +7,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.g6.onlineeyecare.exceptions.PatientIdFoundNotException;
 import com.g6.onlineeyecare.exceptions.TestIdNotFoundException;
-
+import com.g6.onlineeyecare.patient.dao.IPatientRepository;
 import com.g6.onlineeyecare.test.dao.ITestRepository;
 import com.g6.onlineeyecare.test.dto.Test;
 
@@ -17,17 +18,24 @@ public class TestServiceImpl implements ITestService{
 
 	@Autowired
 	ITestRepository repository;
+	@Autowired
+	IPatientRepository patientRepository;
 	
 	@Override
-	@Transactional
-	public Test addTest(Test test) {
-		try {
-			repository.save(test);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		return test;
-	}
+    @Transactional
+    public Test addTest(Test test) throws PatientIdFoundNotException {
+
+        if(patientRepository.findById(test.getPatient().getUserId()).isPresent())
+        {
+            repository.save(test);
+        }
+        else
+        {
+            throw new PatientIdFoundNotException("Patient Id not found");
+        }
+
+        return test;
+    }
 
 	@Override
 	@Transactional

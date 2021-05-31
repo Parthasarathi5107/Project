@@ -2,7 +2,10 @@ package com.g6.onlineeyecare.user.controller;
 
 import java.util.List;
 
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -20,6 +23,7 @@ import com.g6.onlineeyecare.user.service.IUserService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 
+@Validated
 @Api(value = "User Rest Controller", description = "REST APIs related to User Entity!!!!")
 @RestController
 @RequestMapping("/users")
@@ -30,7 +34,7 @@ public class UserController {
 	
 	@ApiOperation(value = "add a new User",response = User.class)
 	@PostMapping("/add")
-	public Admin addUser(@RequestBody Admin user) {
+	public Admin addUser(@RequestBody @Valid Admin user) {
 		return (Admin) this.userService.addUser(user);
 	}
 	

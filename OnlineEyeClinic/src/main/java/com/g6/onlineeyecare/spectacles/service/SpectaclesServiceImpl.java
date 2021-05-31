@@ -7,7 +7,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.g6.onlineeyecare.exceptions.PatientIdFoundNotException;
 import com.g6.onlineeyecare.exceptions.SpectaclesIdNotFoundException;
+import com.g6.onlineeyecare.patient.dao.IPatientRepository;
 import com.g6.onlineeyecare.spectacles.dao.ISpectaclesRepository;
 import com.g6.onlineeyecare.spectacles.dto.Spectacles;
 
@@ -16,15 +18,20 @@ public class SpectaclesServiceImpl implements ISpectaclesService{
 
 	@Autowired
 	ISpectaclesRepository repository;
+	@Autowired
+	IPatientRepository patientRepository;
 	
 	@Override
 	@Transactional
-	public Spectacles addSpectacles(Spectacles spectacles) {
-		try {
+	public Spectacles addSpectacles(Spectacles spectacles) throws PatientIdFoundNotException {
+		if(patientRepository.findById(spectacles.getPatient().getUserId()).isPresent()) {
 			repository.save(spectacles);
-		} catch (Exception e) {
-			e.printStackTrace();
 		}
+		else {
+			throw new PatientIdFoundNotException("Patient Id not found");
+		}
+			
+		
 		return spectacles;
 	}
 

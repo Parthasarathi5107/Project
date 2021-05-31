@@ -3,6 +3,9 @@ package com.g6.onlineeyecare.doctor.dto;
 import javax.persistence.Column;
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 
 import com.g6.onlineeyecare.user.dto.User;
 
@@ -11,10 +14,16 @@ import com.g6.onlineeyecare.user.dto.User;
 public class Doctor extends User {
 
 	@Column
+	@NotEmpty(message = "Consultaion time cannot be empty")
 	private String doctorConsultationTime;
+	
 	@Column
+	@NotNull
 	private long doctorMobile;
+	
 	@Column
+	@Email(message="Email should be valid")
+	@NotEmpty(message = "Email cannot be empty")
 	private String doctorEmail;
 	@Column
 	private String address;
